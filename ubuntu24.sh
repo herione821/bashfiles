@@ -57,7 +57,7 @@ FROM ubuntu:24.04
 RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
     curl git nano vim python3 python3-pip nodejs npm \
     build-essential cmake htop neofetch tlp \
-    zram-tools docker.io wasm-edge-runtime \
+    zram-tools docker.io \
     && apt clean && rm -rf /var/lib/apt/lists/*
 
 # Enable ZRAM for better memory management
@@ -107,9 +107,6 @@ systemctl enable tlp && systemctl start tlp
 
 # Start Docker service
 systemctl start docker
-
-# Enable WasmEdge
-export PATH="/usr/bin/wasmedge:":$PATH
 
 echo "✅ Setup complete! ULTRA OPTIMIZED Codespace is READY 🚀🔥"
 EOF
