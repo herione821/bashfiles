@@ -7,18 +7,16 @@ DEVCONTAINER_PATH="$WORKSPACE/.devcontainer"
 # Ensure we are in the workspace directory
 mkdir -p "$DEVCONTAINER_PATH"
 
-echo "🚀 Creating SUPER ADVANCED .devcontainer setup in $DEVCONTAINER_PATH..."
-
-# Clone the required repository
-git clone https://github.com/CryptonodesHindi/CNH-Gaianetnode "$WORKSPACE/CNH-Gaianetnode"
+echo "🚀 Creating ULTRA OPTIMIZED .devcontainer setup in $DEVCONTAINER_PATH..."
 
 # Write devcontainer.json
 cat <<EOF > "$DEVCONTAINER_PATH/devcontainer.json"
 {
-  "name": "Super Advanced Ubuntu Dev Container",
+  "name": "Ultra Optimized Ubuntu Dev Container",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:1": {}
+    "ghcr.io/devcontainers/features/common-utils:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
   "customizations": {
     "vscode": {
@@ -26,9 +24,13 @@ cat <<EOF > "$DEVCONTAINER_PATH/devcontainer.json"
         "terminal.integrated.defaultProfile.linux": "bash"
       },
       "extensions": [
-        "ms-azuretools.vscode-docker",
         "ms-python.python",
-        "ms-vscode.cpptools"
+        "ms-vscode.cpptools",
+        "esbenp.prettier-vscode",
+        "eamodio.gitlens",
+        "ms-toolsai.jupyter",
+        "github.copilot",
+        "ms-python.vscode-pylance"
       ]
     }
   },
@@ -36,7 +38,7 @@ cat <<EOF > "$DEVCONTAINER_PATH/devcontainer.json"
   "remoteUser": "root",
   "mounts": [
     {
-      "source": "${localWorkspaceFolder}",
+      "source": "\${localWorkspaceFolder}",
       "target": "/workspaces/$(basename $PWD)",
       "type": "bind"
     }
@@ -54,14 +56,17 @@ FROM ubuntu:24.04
 # Install essential tools & performance tuning
 RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
     curl git nano vim python3 python3-pip nodejs npm \
-    build-essential cmake htop neofetch tlp docker.io \
+    build-essential cmake htop neofetch tlp \
+    zram-tools docker.io wasm-edge-runtime \
     && apt clean && rm -rf /var/lib/apt/lists/*
 
 # Enable ZRAM for better memory management
-RUN apt install -y zram-tools && \
-    echo 'ALGO=lz4' > /etc/default/zramswap && \
+RUN echo 'ALGO=lz4' > /etc/default/zramswap && \
     echo 'PERCENT=50' >> /etc/default/zramswap && \
     systemctl enable zramswap
+
+# Enable Docker service
+RUN systemctl enable docker
 
 # Set working directory
 WORKDIR /workspaces/$(basename $PWD)
@@ -76,11 +81,11 @@ echo "✅ Dockerfile created!"
 cat <<EOF > "$DEVCONTAINER_PATH/setup.sh"
 #!/bin/bash
 
-echo "🚀 Running post-creation setup for MAX PERFORMANCE..."
+echo "🚀 Running post-creation setup for ULTRA MAX PERFORMANCE..."
 
 # Update & install necessary tools
 apt update && apt install -y \
-    jq zip unzip python3-venv tlp docker.io \
+    jq zip unzip python3-venv tlp \
     && apt clean && rm -rf /var/lib/apt/lists/*
 
 # Enable CPU performance mode
@@ -100,10 +105,13 @@ ulimit -n 1048576
 # Enable TLP for power management
 systemctl enable tlp && systemctl start tlp
 
-# Install Chromium Browser
-bash <(curl -sL https://raw.githubusercontent.com/dcmildhi/try/refs/heads/main/chrome.sh)
+# Start Docker service
+systemctl start docker
 
-echo "✅ Setup complete! Super Advanced Codespace is READY 🚀🔥"
+# Enable WasmEdge
+export PATH="/usr/bin/wasmedge:":$PATH
+
+echo "✅ Setup complete! ULTRA OPTIMIZED Codespace is READY 🚀🔥"
 EOF
 
 # Make the setup script executable
